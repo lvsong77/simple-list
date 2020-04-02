@@ -17,12 +17,14 @@
         <p>下拉添加新事项</p>
       </div>
     </scroll>
+    <urgency class="urgency-div"/>
   </div>
 </template>
 
 <script>
   import AddList from './childComps/AddList'
   import Lists from './childComps/Lists'
+  import Urgency from './childComps/Urgency'
 
   import Scroll from 'components/content/scroll/Scroll'
 
@@ -33,6 +35,7 @@
     components: {
       AddList,
       Lists,
+      Urgency,
       Scroll
     },
     data() {
@@ -51,7 +54,7 @@
     computed: {
       ...mapGetters(['lists']),
       showDefault: function() {
-        return this.lists.length === 0
+        return this.lists.data.length === 0
       }
     },
     methods: {
@@ -106,5 +109,10 @@
     transform: translate(-50%, -50%);
     font-size: 0.9rem;
     color: gray;
+  }
+  .urgency-div{
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
   }
 </style>

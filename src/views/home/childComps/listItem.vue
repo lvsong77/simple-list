@@ -1,31 +1,37 @@
 <template>
-  <v-touch @swipeleft="swipeLeft">
-    <div :class="['list-item', {delete: hasDelete}]">
-      {{listItem}}
+  <v-touch @swipeleft="swipeLeft"
+           @swiperight="swipeRight">
+    <div :class="['list-item', {completed: hasComplete}]">
+      {{listItem.list}}
     </div>
   </v-touch>
 </template>
 
 <script>
+  import {mapActions} from 'vuex'
+
   export default {
     name: 'ListItem',
     props: {
       listItem: {
-        type: String,
+        type: Object,
         default() {
-          return ''
+          return {}
         }
       }
     },
-    data() {
-      return {
-        hasDelete: false
+    computed: {
+      hasComplete: function() {
+        return this.listItem.hasComplete
       }
     },
     methods: {
+      ...mapActions(['deleteList', 'completeList']),
       swipeLeft() {
-        console.log(111111);
-        this.hasDelete = true
+        this.deleteList(this.listItem.index)
+      },
+      swipeRight() {
+        this.completeList(this.listItem.index)
       }
     }
   }
@@ -33,9 +39,10 @@
 
 <style>
   .list-item {
-    margin: 5px 0;
+    margin: 10px 0;
   }
-  .delete {
+  .completed {
+    text-decoration: line-through;
     color: gray;
   }
 </style>
