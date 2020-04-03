@@ -23,7 +23,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .lists {
     padding: 10px;
   }

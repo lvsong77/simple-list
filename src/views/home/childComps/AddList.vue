@@ -1,11 +1,11 @@
 <template>
   <div class="addList">
     <input type="text"
-           :class="{'front': isFront}"
+           :class="{'front': isFront, 'focused': isFocus}"
            placeholder="记下你的待办事项"
            @keydown.enter="addToList"
-           @blur="closeAddBar"
-           v-model="newItem">
+           @blur="inputBlur"
+           v-model="newItem.value">
   </div>
 </template>
 
@@ -22,8 +22,21 @@
     },
     data() {
       return {
-        newItem: ''
+        newItem: {
+          value: '',
+          urgency: 0
+        },
+        isFocus: true
       }
+    },
+    mounted() {
+      this.$bus.$on('urgencyClicked', (value) => {
+        document.querySelector('input').focus()
+        this.isFocus = true
+      })
+      this.$bus.$on('urgencyChanged', (value) => {
+        this.newItem.urgency = value
+      })
     },
     computed: {
       ...mapGetters(['lists'])
@@ -31,24 +44,33 @@
     methods: {
       ...mapActions(['addList']),
       addToList() {
-        console.log(this.lists);
-        
-        if (this.newItem) {
+        if (this.newItem.value) {
           this.addList(this.newItem).then(res => {
             this.$bus.$emit('addListDone')
-            this.newItem = ''
+            this.newItem.value = ''
+            this.newItem.urgency = 0
           })
         }
       },
       closeAddBar() {
         this.$bus.$emit('addListDone')
-        this.newItem = ''
+        this.newItem.value = ''
+        this.newItem.urgency = 0
+      },
+      inputBlur() {
+        this.isFocus = false
+        setTimeout(() => {
+          if (!this.isFocus) {
+            this.addToList()
+            this.closeAddBar()
+          }
+        }, 50);
       }
     }
   }
 </script>
 
-<style>
+<style scoped>
   .addList {
     padding: 0 10px;
   }

@@ -8,7 +8,8 @@ export default {
   [ADD_LIST](state, payload) {
     let newData = {
       index: state.lists.total,
-      list: payload,
+      list: payload.value,
+      urgency: payload.urgency,
       hasComplete: false
     }
     state.lists.data.unshift(newData)

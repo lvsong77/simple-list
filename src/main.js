@@ -9,6 +9,7 @@ Vue.config.productionTip = false
 // 添加事件总线对象
 Vue.prototype.$bus = new Vue()
 
+// 安装vue-touch插件
 Vue.use(VueTouch, {name: 'v-touch'})
 
 new Vue({

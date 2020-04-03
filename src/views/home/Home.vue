@@ -17,7 +17,7 @@
         <p>下拉添加新事项</p>
       </div>
     </scroll>
-    <urgency class="urgency-div"/>
+    <urgency class="urgency-div" v-show="showFrontAddList"/>
   </div>
 </template>
 
@@ -82,7 +82,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .add-list-front {
     position: fixed;
     top: 10px;
